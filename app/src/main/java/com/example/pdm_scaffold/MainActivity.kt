@@ -23,6 +23,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+
 
 
 class MainActivity : ComponentActivity() {
@@ -62,47 +65,55 @@ fun ScaffoldExample() {
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    containerColor = Color.Blue,
+                    titleContentColor = Color.White,
                 ),
                 title = {
-                    Text("Top app bar")
+                    Text("Custom Top App Bar")
                 }
             )
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary,
+                containerColor = Color.Cyan,
+                contentColor = Color.Black,
             ) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = "Bottom app bar",
-                )
+                Button(
+                    onClick = { presses = 0 },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+                ) {
+                    Text("Reset Counter", color = Color.White)
+                }
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { presses++ }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
-            }
+            ExtendedFloatingActionButton(
+                onClick = { presses++ },
+                containerColor = Color.Red,
+                contentColor = Color.White,
+                icon = { Icon(Icons.Default.Add, contentDescription = "Add") },
+                text = { Text("Click Me") }
+            )
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier.padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                modifier = Modifier.padding(8.dp),
-                text =
-                """
-                    This is an example of a scaffold. It uses the Scaffold composable's parameters to create a screen with a simple top app bar, bottom app bar, and floating action button.
-
-                    It also contains some basic inner content, such as this text.
-
-                    You have pressed the floating action button $presses times.
-                """.trimIndent(),
+                text = "You have pressed the button $presses times.",
+                modifier = Modifier.padding(8.dp)
             )
+            
+            OutlinedButton(
+                onClick = { presses += 5 },
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Magenta)
+            ) {
+                Text("Add 5")
+            }
         }
     }
 }
